@@ -1,5 +1,4 @@
-from typing import List
-from app.core.models.events_models import Event
+from app.core.models.events_models import DetectionContext
 from app.pipeline.base import ProcessingStage
 
 class Pipeline:
@@ -13,8 +12,8 @@ class Pipeline:
         return self  # Allow method chaining
 
 
-    def process(self, events: List[Event]):
+    def process(self, detection_context : DetectionContext) -> DetectionContext:
         """Process the events through all the filters in the pipeline."""
         for stage in self.filters:
-            events = stage.process(events)
-        return events
+            context = stage.process(detection_context)
+        return context
