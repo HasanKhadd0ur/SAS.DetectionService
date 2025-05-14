@@ -1,4 +1,3 @@
-# app/infrastructure/kafka_consumer.py
 import json
 from aiokafka import AIOKafkaConsumer
 from typing import AsyncGenerator
