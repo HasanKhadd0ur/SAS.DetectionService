@@ -6,14 +6,21 @@ from app.core.models.message import Message
 
 @dataclass 
 class Location:
-    latitude :float 
-    longtiude:float
+    latitude :float =0.0
+    longitude:float=0.0
 
 @dataclass
 class Event:
-    id :str 
+    id :str
     topic:str
-    summary: str=""
-    time: datetime = datetime.utcnow()
+    summary: str
     location: Location
+    mentioned_location:str
     messages: List[Message]    
+    time: datetime = datetime.utcnow()
+
+@dataclass
+class DetectionContext:
+    detected_events : List[Event]
+    updated_events : List[Event]=[]
+    
