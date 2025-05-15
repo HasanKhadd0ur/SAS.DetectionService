@@ -1,23 +1,33 @@
-from typing import List, Optional
+import requests
+from typing import List
 from app.core.models.message import Message
 from app.core.models.events_models import Event, Location
 
+def serialize_message(message: Message) -> dict:
+    data = message.__dict__.copy()
+    data["timestamp"] = message.timestamp.isoformat()  # Serialize datetime
+    return data
+
 class LocationInferenceService:
-    def __init__(self, *args, **kwargs):
-        pass  # Dummy version, no real model loading
+    def __init__(self, base_url: str ):
+        self.base_url = base_url
 
-    def extract_message_location_mentions(self, message: Message) -> List[str]:
-        """Always return a constant location name."""
-        return ["Damascus"]
-    
     def extract_message_location(self, message: Message) -> List[str]:
-        """Always return a constant location name."""
-        return ["Damascus"]
-    
-    def extract_event_location(self, event: Event) -> str:
-        
-        return "Jableh, Syria"
+        response = requests.post(f"{self.base_url}/recognition/extract-message-location", json={"message":message.r})
+        response.raise_for_status()
+        print(response.json())
+        return response.json()  
 
+    def extract_event_location(self, event: Event) -> str:
+            serialized_messages = [serialize_message(m) for m in event.messages]
+            response = requests.post(
+                f"{self.base_url}/resolution/extract-event-location",
+                json=serialized_messages
+            )
+            response.raise_for_status()
+            return response.json()
     def geocode(self, location_name: str) -> Location:
-        """Always return a constant location for any input."""
-        return Location(latitude=33.5138, longtiude=36.2765)
+        response = requests.get(f"{self.base_url}/resolution/geocode", params={"location": location_name})
+        response.raise_for_status()
+        data = response.json()
+        return Location(**data)  # Should match your Location model format

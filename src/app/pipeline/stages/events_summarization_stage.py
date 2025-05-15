@@ -7,7 +7,7 @@ class EventsSummerizationStage(ProcessingStage):
     def process(self, detection_context : DetectionContext, nextStep: Optional[ProcessingStage] = None) -> DetectionContext:
         
         for event in detection_context.detected_events : 
-            event.summary = event.messages[0] if event.messages else "No summary available"
+            event.summary = event.messages[0].content[-10:] if event.messages else "No summary available"
 
         # If there's a next step, pass the events to it
         if nextStep:

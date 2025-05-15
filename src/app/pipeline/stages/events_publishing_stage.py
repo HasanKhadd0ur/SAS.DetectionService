@@ -9,7 +9,7 @@ class EventsPublishingStage(ProcessingStage):
         
         # Print the events to the console
         for event in  detection_context.detected_events:
-            print(f"[+]  Topic: {event.topic}, Summary: {event.summary[-10:]}, Time: {event.time}")
+            print(f"[+]  Topic: {event.topic}, Summary: {event.summary}, Time: {event.time}")
 
         # If there's a next step, pass the events to it
         if nextStep:

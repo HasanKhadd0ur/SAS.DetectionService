@@ -31,7 +31,6 @@ class DetectionAgent:
 
         # Iterate over the messages in the asynchronous generator
         async for msg_batch in messages:
-
             # Detect events from the message batch
             async for event_batch in self.detection_strategy.detect_events(msg_batch):
                 context= DetectionContext(detected_events=event_batch)

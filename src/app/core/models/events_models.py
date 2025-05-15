@@ -22,5 +22,5 @@ class Event:
 @dataclass
 class DetectionContext:
     detected_events : List[Event]
-    updated_events : List[Event]=[]
+    updated_events : List[Event]=None
     
