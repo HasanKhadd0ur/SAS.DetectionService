@@ -5,7 +5,7 @@ from app.core.models.events_models import Event, Location
 
 def serialize_message(message: Message) -> dict:
     data = message.__dict__.copy()
-    data["timestamp"] = message.timestamp.isoformat()  # Serialize datetime
+    data["created_at"] = message.created_at.isoformat()  # Serialize datetime
     return data
 
 class LocationInferenceService:
@@ -19,7 +19,7 @@ class LocationInferenceService:
         return response.json()  
 
     def extract_event_location(self, event: Event) -> str:
-            serialized_messages = [serialize_message(m) for m in event.messages]
+            serialized_messages = [m.serialize_message() for m in event.messages]
             response = requests.post(
                 f"{self.base_url}/resolution/extract-event-location",
                 json=serialized_messages

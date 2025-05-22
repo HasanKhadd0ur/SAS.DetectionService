@@ -11,13 +11,23 @@ class Message:
     content: str=""
     sentiment_label: str=""
     sentiment_score: float =0
-    timestamp: datetime = datetime.utcnow()
+    platform_id:str=" 1e9cfd36-e1e8-49dc-abe7-d8e983ec2dd3"
+    created_at: datetime = datetime.utcnow()
     metadata: dict = None
 
     def __post_init__(self):
         if self.metadata is None:
             self.metadata = {}
-
-@dataclass
-class MessageContext: 
-    message: Message 
+    
+    def serialize_message(self) -> dict:
+        
+        return {
+            "messageId": self.id,
+            "content": self.content,
+            "source": self.source,
+            "platform": self.platform,
+            "platformId": self.platform_id,
+            "createdAt": self.created_at.isoformat(),
+            "sentimentLabel": self.sentiment_label,
+            "sentimentScore": str(self.sentiment_score)
+        }
