@@ -26,7 +26,7 @@ class EventsTopicClassificationStage(ProcessingStage):
         #     else:
         #         event.topic = "Unknown"  # If no content available, set topic to 'Unknown'
         for event in detection_context.detected_events:
-            event.topic="Dummmy"
+            event.topic="أخبار دمشق"
         # If there's a next step, pass the events to it
         if nextStep:
             return nextStep.process(detection_context)
