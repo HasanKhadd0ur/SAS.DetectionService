@@ -15,8 +15,9 @@ class Event:
     topic:str
     summary: str
     location: Location
-    mentioned_location:str
-    messages: List[Message]    
+    messages: List[Message]   
+    location_name:str=""
+    mentioned_location:str="" 
     time: datetime = datetime.utcnow()
 
 @dataclass
