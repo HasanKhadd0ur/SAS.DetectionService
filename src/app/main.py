@@ -7,10 +7,12 @@ from app.pipeline.registry import postprocessing_pipeline,publishing_pipeline
 
 async def main():
 
-
+    print("[+] Detection Service Started")
     consumer = KafkaConsumer("telegram.Politics")
+    
     await consumer.start()  # Start the consumer to begin listening for messages
 
+    print("[+] Start Consuming Messages")
     msg_service = MessageService(consumer)
 
 

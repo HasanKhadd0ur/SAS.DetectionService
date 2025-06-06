@@ -30,4 +30,5 @@ class LocationInferenceService:
         response = requests.get(f"{self.base_url}/resolution/geocode", params={"location": location_name})
         response.raise_for_status()
         data = response.json()
+        print(data)
         return Location(**data)  # Should match your Location model format

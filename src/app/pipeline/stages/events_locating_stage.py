@@ -14,7 +14,10 @@ class EventsLocatingStage(ProcessingStage):
           
             location_name = self.location_service.extract_event_location(event)
             event.location_name=location_name
+
             geocoded_location = self.location_service.geocode(location_name)
+            print(geocoded_location,"dfdsf")
+           
             # print(geocoded_location)
             # Set it on the event
             event.location = geocoded_location
