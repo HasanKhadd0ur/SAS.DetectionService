@@ -21,7 +21,7 @@ class LocationInferenceService:
     def extract_event_location(self, event: Event) -> str:
             serialized_messages = [m.serialize_message() for m in event.messages]
             response = requests.post(
-                f"{self.base_url}/resolution/extract-event-location",
+                f"{self.base_url}/recognition/extract-event-location",
                 json=serialized_messages
             )
             response.raise_for_status()
