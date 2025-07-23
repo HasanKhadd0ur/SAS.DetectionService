@@ -7,6 +7,8 @@ from app.core.configs.env_config import EnvConfig
 import google.generativeai as genai
 import re
 
+MAX_SUMMARY_LENGTH = 255
+
 class EventsSummerizationStage(ProcessingStage):
     def __init__(self,config :BaseConfig):
         self.prompt_service = PromptService()
@@ -20,6 +22,9 @@ class EventsSummerizationStage(ProcessingStage):
             try:
                 # Combine all messages into one block of text
                 all_messages_text = "\n".join([msg.content for msg in event.messages])
+                # Truncate if longer than max allowed length
+                if len(all_messages_text) > MAX_SUMMARY_LENGTH:
+                    all_messages_text = all_messages_text[:MAX_SUMMARY_LENGTH]
 
                 # Load the prompt template
                 instructions = self.prompt_service.get_prompt_instructions("event_summarization")

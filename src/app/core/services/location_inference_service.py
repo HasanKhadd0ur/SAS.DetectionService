@@ -15,7 +15,6 @@ class LocationInferenceService:
     def extract_message_location(self, message: Message) -> List[str]:
         response = requests.post(f"{self.base_url}/recognition/extract-message-location", json={"message":message.r})
         response.raise_for_status()
-        print(response.json())
         return response.json()  
 
     def extract_event_location(self, event: Event) -> str:
@@ -30,5 +29,4 @@ class LocationInferenceService:
         response = requests.get(f"{self.base_url}/resolution/geocode", params={"location": location_name})
         response.raise_for_status()
         data = response.json()
-        print(data)
         return Location(**data)  # Should match your Location model format
