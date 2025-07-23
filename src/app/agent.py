@@ -4,20 +4,25 @@ from app.core.models.events_models import DetectionContext, Event
 from app.detection.base import DetectionStrategy
 from app.pipeline.pipeline import Pipeline
 from app.pipeline.registry import postprocessing_pipeline as post, publishing_pipeline as pub
+from app.core.services.logging_service import LoggingService
+
+logger = LoggingService("DetectionAgent").get_logger()
+
 
 class DetectionAgent:
-    def __init__(
-        self, 
-        detection_strategy: DetectionStrategy, 
-        postprocessing_pipeline: Pipeline = post, 
-        publishing_pipeline: Pipeline = pub
-    ):
-        self.detection_strategy = detection_strategy
+    def __init__(self,
+            strategy: DetectionStrategy,
+            min_batch_size: int = 10,
+            postprocessing_pipeline: Pipeline = post, 
+            publishing_pipeline: Pipeline = pub):
+        self.strategy = strategy
+        self.context = DetectionContext(messages=[])
+        self.min_batch_size = min_batch_size
         self.postprocessing_pipeline = postprocessing_pipeline
         self.publishing_pipeline = publishing_pipeline
 
     def set_detection_strategy(self, strategy: DetectionStrategy):
-        self.detection_strategy = strategy
+        self.strategy = strategy
 
     def set_postprocessing_pipeline(self, pipeline: Pipeline):
         self.postprocessing_pipeline = pipeline
@@ -25,19 +30,27 @@ class DetectionAgent:
     def set_publishing_pipeline(self, pipeline: Pipeline):
         self.publishing_pipeline = pipeline
 
-    async def run(self, messages: AsyncGenerator[List[Message], None]) -> List[Event]:
+    async def handel_messages(self, new_messages: AsyncGenerator[List[Message], None]) -> List[Event]:
         """Process messages using the detection strategy and pipelines."""
-        events = []
 
-        # Iterate over the messages in the asynchronous generator
-        async for msg_batch in messages:
-            # Detect events from the message batch
-            async for event_batch in self.detection_strategy.detect_events(msg_batch):
-                context= DetectionContext(detected_events=event_batch)
-                 # Process the detected events through the postprocessing and publishing pipelines
-                context = self.postprocessing_pipeline.process(context) 
-                context=self.publishing_pipeline.process(context)
-                events.extend(context.detected_events)
+        # self.context.messages.extend(new_messages)
+        
+        async for batch in new_messages:  # batch is List[Message]
+            self.context.messages.extend(batch)
+            logger.info(f"Added {len(batch)} messages to buffer. Total now: {len(self.context.messages)}")
 
-       
-        return events
+            if len(self.context.messages) >= self.min_batch_size:
+                logger.info("Running detection strategy...")
+
+                # Strategy handles detection + cleanup logic (e.g., clustering window, cutoff)
+                self.context = await self.strategy.detect(self.context)
+
+                # Run post-detection pipeline
+                self.context = self.postprocessing_pipeline.process(self.context)
+                self.context = self.publishing_pipeline.process(self.context)
+                logger.info(f"Detected {len(self.context.detected_events)} new events.")
+                logger.info(f"Updated {len(self.context.updated_events)} events.")
+
+                self.context.detected_events =[]
+                self.context.updated_events=[]
+                
