@@ -12,6 +12,7 @@ class MessageService:
     async def stream_messages(self) -> AsyncGenerator[List[Message], None]:
         # Asynchronously process messages in batches from Kafka
         async for raw_messages in self.kafka_consumer.get_messages():
+            # await self.kafka_consumer.commit() 
             # Process each batch of raw messages and convert to Message objects
             messages = [
                 Message(
@@ -25,9 +26,11 @@ class MessageService:
                     sentiment_label=raw_message.get('sentiment_label', 'neutral'),  # Default sentiment label
                     sentiment_score=raw_message.get('sentiment_score', 0.0),  # Default sentiment score
                     created_at= datetime.utcnow(),  # Set the timestamp to current UTC time
-                    metadata=raw_message.get('metadata', {})  # Get metadata if available, else default to empty dict
+                    metadata=raw_message.get('metadata', {}),  # Get metadata if available, else default to empty dict
+                     embedding=raw_message.get('embedding')
                 )
                 for raw_message in raw_messages  # Iterate over the batch of messages
             ]
             # print(messages[0].created_at)
             yield messages  # Yield the batch of processed messages
+            await self.kafka_consumer.commit()

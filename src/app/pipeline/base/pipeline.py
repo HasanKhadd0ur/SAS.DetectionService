@@ -1,5 +1,5 @@
 from app.core.models.events_models import DetectionContext
-from app.pipeline.base import ProcessingStage
+from app.pipeline.base.base import ProcessingStage
 
 class Pipeline:
     def __init__(self):
