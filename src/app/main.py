@@ -4,7 +4,7 @@ from app.core.services.messages_service import MessageService
 from app.detection.strategies.hdbscan_detection_strategy import HDBSCANDetectionStrategy
 from app.detection.strategies.simple_rule_based import SimpleRuleBased 
 from app.kafka.kafka_consumer import KafkaConsumer
-from app.pipeline.registry import postprocessing_pipeline,publishing_pipeline
+from app.pipeline.registry.registry import postprocessing_pipeline,publishing_pipeline
 
 async def main():
 

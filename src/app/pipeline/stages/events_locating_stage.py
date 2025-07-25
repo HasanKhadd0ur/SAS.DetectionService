@@ -1,8 +1,8 @@
 from typing import Optional
 from app.core.services.location_inference_service import LocationInferenceService
-from app.pipeline.base import ProcessingStage
 from app.core.models.events_models import DetectionContext
 from app.core.services.logging_service import LoggingService
+from app.pipeline.base.base import ProcessingStage
 
 logger = LoggingService("DetectionAgent").get_logger()
 

@@ -1,5 +1,5 @@
 from typing import Optional
-from app.pipeline.base import ProcessingStage
+from app.pipeline.base.base import ProcessingStage
 from app.core.models.events_models import DetectionContext
 # from transformers import pipeline
 

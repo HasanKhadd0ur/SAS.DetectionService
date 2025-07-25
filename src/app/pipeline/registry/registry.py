@@ -4,7 +4,7 @@
 # Define a postprcessing pipelie
 from app.core.configs.env_config import EnvConfig
 from app.core.services.location_inference_service import LocationInferenceService
-from app.pipeline.pipeline import Pipeline
+from app.pipeline.base.pipeline import Pipeline
 from app.pipeline.stages.events_locating_stage import EventsLocatingStage
 from app.pipeline.stages.events_summarization_stage import EventsSummerizationStage
 from app.pipeline.stages.events_publishing_stage import EventsPublishingStage
@@ -24,3 +24,29 @@ postprocessing_pipeline.add_stage(EventsTopicClassificationStage)
 publishing_pipeline= Pipeline()
 publishing_pipeline.add_stage(EventsPublishingStage)
 
+
+# Shared dependency instances (singletons or factories)
+shared_dependencies = {
+    "LOCATION_SERVICE": location_service,
+    "EnvConfig":EnvConfig()
+    # Add more shared dependencies here if needed
+}
+
+STAGE_CLASS_MAP = {
+    "EventsSummerizationStage": {
+        "class": EventsSummerizationStage,
+        "dependencies": []
+    },
+    "EventsLocatingStage": {
+        "class": EventsLocatingStage,
+        "dependencies": ['LOCATION_SERVICE']
+    },
+    "EventsTopicClassificationStage": {
+        "class": EventsTopicClassificationStage,
+        "dependencies": []
+    },
+    "EventsPublishingStage":{
+        "class":EventsPublishingStage,
+        "dependencies":[]
+    }
+}

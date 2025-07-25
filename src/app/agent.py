@@ -2,8 +2,8 @@ from typing import AsyncGenerator, List
 from app.core.models.message import Message
 from app.core.models.events_models import DetectionContext, Event
 from app.detection.base import DetectionStrategy
-from app.pipeline.pipeline import Pipeline
-from app.pipeline.registry import postprocessing_pipeline as post, publishing_pipeline as pub
+from app.pipeline.base.pipeline import Pipeline
+from app.pipeline.factory.default_pipelines import postprocessing_pipeline as post, publishing_pipeline as pub
 from app.core.services.logging_service import LoggingService
 
 logger = LoggingService("DetectionAgent").get_logger()
