@@ -3,10 +3,10 @@
 **__pycache__/
 *.py[cod]
 *$py.class
-
-.env
+*.csv
 # C extensions
 *.so
+assets/SAS.**/
 
 # Distribution / packaging
 .Python
