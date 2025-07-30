@@ -7,7 +7,7 @@
 # C extensions
 *.so
 assets/SAS.**/
-
+*.env
 # Distribution / packaging
 .Python
 build/

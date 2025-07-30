@@ -14,6 +14,7 @@ class Event:
     id :str
     location: Location=field(default_factory=lambda: Location(latitude=33.33, longitude=34.34))
     topic:str=""
+    title:str=""
     summary: str=""
     messages: List[Message]=field(default_factory=list)
     location_name:str=""
