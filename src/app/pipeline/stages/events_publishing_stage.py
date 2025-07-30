@@ -31,12 +31,12 @@ class EventsPublishingStage(ProcessingStage):
             create_payload = {
                 "eventInfo": {
                     "summary": event.summary,
-                    "title": event.messages[0].content[:170] if event.messages and event.messages[0].content else "no title",
+                    "title": event.title,
                     "sentimentScore": sentiment,
                     "sentimentLabel": "negative" if sentiment <= 0 else "positive",
                     "time": event.time.isoformat() if event.time else None
                 },
-                "topicName": "أخبار سياسية سورية",
+                "topicName": str(event.topic),
                 "countryName": "سوريا",
                 "regionName": str(event.location_name),
                 "cityName": "سوريا",

@@ -12,3 +12,7 @@ class BaseConfig(ABC):
     def get_api_key(self)->str:
         pass
     
+    @abstractmethod
+    def get_topic_keywords(self, topic: str) -> List[str]:
+        """Return a list of keywords for a given topic name"""
+        pass

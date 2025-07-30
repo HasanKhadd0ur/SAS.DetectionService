@@ -56,3 +56,11 @@ class EnvConfig(BaseConfig):
         if not api_key:
             raise EnvironmentError("LLM_API_KEY environment variable is not set")
         return api_key
+    
+    def get_topic_keywords(self, topic: str) -> List[str]:
+        try:
+            keyword_map = self.settings.get_config_from_db("TOPIC_KEYWORDS")
+            return keyword_map.get(topic, [])
+        except KeyError:
+            print("Warning: TOPIC_KEYWORDS config not found in DB.")
+            return []
