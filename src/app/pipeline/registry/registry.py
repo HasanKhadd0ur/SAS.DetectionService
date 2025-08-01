@@ -13,18 +13,6 @@ from app.pipeline.stages.events_topic_classification import EventsTopicClassific
 
 location_service =LocationInferenceService("http://127.0.0.1:5000")
 topic_classification_service = TopicClassificationService(EnvConfig(),"http://localhost:5200")
-postprocessing_pipeline= Pipeline()
-postprocessing_pipeline.add_stage(EventsSummerizationStage,EnvConfig())
-postprocessing_pipeline.add_stage(EventsLocatingStage,location_service)
-postprocessing_pipeline.add_stage(EventsTopicClassificationStage,topic_classification_service)
-
-
-
-
-# Define a publishing pipeline
-publishing_pipeline= Pipeline()
-publishing_pipeline.add_stage(EventsPublishingStage)
-
 
 # Shared dependency instances (singletons or factories)
 shared_dependencies = {
@@ -41,7 +29,7 @@ STAGE_CLASS_MAP = {
     },
     "EventsLocatingStage": {
         "class": EventsLocatingStage,
-        "dependencies": ['LOCATION_SERVICE']
+        "dependencies": ['EnvConfig','LOCATION_SERVICE']
     },
     "EventsTopicClassificationStage": {
         "class": EventsTopicClassificationStage,

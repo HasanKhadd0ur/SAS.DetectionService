@@ -11,7 +11,7 @@ logger = LoggingService("DetectionAgent").get_logger()
 
 class EventsLocatingStage(ProcessingStage):
     
-    def __init__(self,config: BaseConfig, location_service: Optional[LocationInferenceService]):
+    def __init__(self,config: BaseConfig, location_service: LocationInferenceService):
         self.location_service = location_service
         self.nominatim_url = "https://nominatim.openstreetmap.org/reverse"
         self.user_agent = config.get_random_user_agent()

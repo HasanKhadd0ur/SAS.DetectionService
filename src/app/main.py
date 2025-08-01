@@ -6,7 +6,7 @@ from app.detection.registry.register_strategies import register_strategies
 from app.detection.factory.strategy_factory import StrategyFactory
 from app.detection.factory.detection_config import DetectionConfigManager
 from app.kafka.kafka_consumer import KafkaConsumer
-from app.pipeline.registry.registry import postprocessing_pipeline, publishing_pipeline
+from app.pipeline.factory.default_pipelines import postprocessing_pipeline, publishing_pipeline
 from app.routes.config_routes import app as flask_app
 
 def start_flask():
