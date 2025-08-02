@@ -25,7 +25,7 @@ shared_dependencies = {
 STAGE_CLASS_MAP = {
     "EventsSummerizationStage": {
         "class": EventsSummerizationStage,
-        "dependencies": []
+        "dependencies": ["EnvConfig"]
     },
     "EventsLocatingStage": {
         "class": EventsLocatingStage,

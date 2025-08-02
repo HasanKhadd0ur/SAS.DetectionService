@@ -1,8 +1,8 @@
 class HDBSCANConfig:
     WINDOW_SIZE = 1000
     TIME_WINDOW_DAYS = 3
-    MIN_CLUSTER_SIZE = 15
-    MIN_BATCH_SIZE = 100
+    MIN_CLUSTER_SIZE = 6
+    MIN_BATCH_SIZE =100
     MIN_SAMPLES = 5
 
 class StrategyParamsConfig:

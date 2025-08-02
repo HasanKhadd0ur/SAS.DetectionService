@@ -37,9 +37,9 @@ class EventsPublishingStage(ProcessingStage):
                     "time": event.time.isoformat() if event.time else None
                 },
                 "topicName": str(event.topic),
-                "countryName": "سوريا",
-                "regionName": str(event.location_name),
-                "cityName": "سوريا",
+                "countryName":event.country,
+                "regionName": str(event.city + ', '+event.country),
+                "cityName": event.city,
                 "latitude": event.location.latitude,
                 "longitude": event.location.longitude
             }
@@ -70,6 +70,8 @@ class EventsPublishingStage(ProcessingStage):
 
             except requests.RequestException as e:
                 logger.error(f"Error publishing event: {e}")
+                logger.error(f"Payload: {jsons.dumps(create_payload, indent=2)}")
+
 
         if nextStep:
             return nextStep.process(detection_context)

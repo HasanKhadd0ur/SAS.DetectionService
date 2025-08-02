@@ -49,6 +49,7 @@ class EventsLocatingStage(ProcessingStage):
     def process(self, detection_context: DetectionContext, nextStep: Optional[ProcessingStage] = None) -> DetectionContext:
         for event in detection_context.detected_events:
             try:
+                location_name='سوريا دمشق'
                 # Extract textual location name from event using your location service
                 location_name = self.location_service.extract_event_location(event)
                 event.location_name = location_name
@@ -77,10 +78,10 @@ class EventsLocatingStage(ProcessingStage):
 
             except Exception as e:
                 logger.error(f"Failed to extract or geocode location for event {getattr(event, 'id', 'unknown')}: {e}")
-                event.location_name = None
-                event.location = None
-                event.city = ""
-                event.country = ""
+                event.location_name = location_name
+                # event.location = location
+                event.city = "سوريا"
+                event.country = "دمشق"
 
         if nextStep:
             return nextStep.process(detection_context)

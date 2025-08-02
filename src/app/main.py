@@ -8,6 +8,7 @@ from app.detection.factory.detection_config import DetectionConfigManager
 from app.kafka.kafka_consumer import KafkaConsumer
 from app.pipeline.factory.default_pipelines import postprocessing_pipeline, publishing_pipeline
 from app.routes.config_routes import app as flask_app
+import uuid
 
 def start_flask():
     flask_app.run(host="0.0.0.0", port=5300)
@@ -15,6 +16,7 @@ def start_flask():
 async def run_detection_loop():
     print("[INFO] Detection Service Started")
     consumer = KafkaConsumer("Telegram.Politics",
+                             group_id='scraper-260e8ee0-14db-448b-a466-250ad6667be3',#'scraper-' + str(uuid.uuid4()),
                              enable_auto_commit=True,
                              max_poll_records=5,
                              max_poll_interval_ms=6000_000)
