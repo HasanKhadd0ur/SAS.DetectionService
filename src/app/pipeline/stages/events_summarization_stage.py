@@ -46,33 +46,37 @@ class EventsSummerizationStage(ProcessingStage):
                     f"المحتوى:\n{all_messages_text}"
                 )
 
-                # # Generate content from Gemini model using the full prompt
-                # response = self.model.generate_content(prompt)
+                # Generate content from Gemini model using the full prompt
+                response = self.model.generate_content(prompt)
 
-                # # The raw text response from the LLM (expected to be a JSON string)
-                # raw_output = response.text.strip()
+                # The raw text response from the LLM (expected to be a JSON string)
+                raw_output = response.text.strip()
 
-                # # Clean up code fences if present (optional, depending on LLM output)
-                # raw_output = re.sub(r"```(?:\w+)?\n(.*?)\n```", r"\1", raw_output, flags=re.DOTALL).strip()
+                # Clean up code fences if present (optional, depending on LLM output)
+                raw_output = re.sub(r"```(?:\w+)?\n(.*?)\n```", r"\1", raw_output, flags=re.DOTALL).strip()
 
-                # # Attempt to parse the LLM output as JSON with 'title' and 'summary' keys
-                # try:
-                #     parsed = json.loads(raw_output)
-                #     event.title = parsed.get("title", "").strip()
-                #     event.summary = parsed.get("summary", "").strip()
-                # except json.JSONDecodeError:
-                #     # Fallback: if JSON parsing fails, store raw output as summary and empty title
-                #     event.title = ""
-                #     event.summary = raw_output
+                # Attempt to parse the LLM output as JSON with 'title' and 'summary' keys
+                try:
+                    parsed = json.loads(raw_output)
+                    event.title = parsed.get("title", "").strip()
+                    event.summary = parsed.get("summary", "").strip()
+                except json.JSONDecodeError:
+                    # Fallback: if JSON parsing fails, store raw output as summary and empty title
+                    # event.title = ""
+                    # event.summary = raw_output
+                    event.title = all_messages_text[:50].strip()  # example: first 50 chars as title
+                    event.summary = all_messages_text
 
-                # For now, just assign the truncated messages text as summary and title
-                event.title = all_messages_text[:50].strip()  # example: first 50 chars as title
-                event.summary = all_messages_text
+
+                # # For now, just assign the truncated messages text as summary and title
+                # event.title = all_messages_text[:50].strip()  # example: first 50 chars as title
+                # event.summary = all_messages_text
 
             except Exception as e:
                 # If anything goes wrong, mark summary as failed and include error message
-                event.title = ""
-                event.summary = f"LLM summarization failed: {e}"
+                # print(all_messages_text)
+                event.title = all_messages_text[:50].strip()  # example: first 50 chars as title
+                event.summary = all_messages_text
 
         # If there is a next pipeline stage, continue processing
         if nextStep:

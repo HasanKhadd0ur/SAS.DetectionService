@@ -1,30 +1,16 @@
 
-
-
 # Define a postprcessing pipelie
 from app.core.configs.env_config import EnvConfig
 from app.core.services.location_inference_service import LocationInferenceService
 from app.core.services.topic_classification_service import TopicClassificationService
-from app.pipeline.base.pipeline import Pipeline
 from app.pipeline.stages.events_locating_stage import EventsLocatingStage
 from app.pipeline.stages.events_summarization_stage import EventsSummerizationStage
 from app.pipeline.stages.events_publishing_stage import EventsPublishingStage
 from app.pipeline.stages.events_topic_classification import EventsTopicClassificationStage
+from app.pipeline.stages.policy_filtering_stage import PolicyFilteringStage
 
 location_service =LocationInferenceService("http://127.0.0.1:5000")
 topic_classification_service = TopicClassificationService(EnvConfig(),"http://localhost:5200")
-postprocessing_pipeline= Pipeline()
-postprocessing_pipeline.add_stage(EventsSummerizationStage,EnvConfig())
-postprocessing_pipeline.add_stage(EventsLocatingStage,location_service)
-postprocessing_pipeline.add_stage(EventsTopicClassificationStage,topic_classification_service)
-
-
-
-
-# Define a publishing pipeline
-publishing_pipeline= Pipeline()
-publishing_pipeline.add_stage(EventsPublishingStage)
-
 
 # Shared dependency instances (singletons or factories)
 shared_dependencies = {
@@ -37,11 +23,11 @@ shared_dependencies = {
 STAGE_CLASS_MAP = {
     "EventsSummerizationStage": {
         "class": EventsSummerizationStage,
-        "dependencies": []
+        "dependencies": ["EnvConfig"]
     },
     "EventsLocatingStage": {
         "class": EventsLocatingStage,
-        "dependencies": ['LOCATION_SERVICE']
+        "dependencies": ['EnvConfig','LOCATION_SERVICE']
     },
     "EventsTopicClassificationStage": {
         "class": EventsTopicClassificationStage,
@@ -50,5 +36,9 @@ STAGE_CLASS_MAP = {
     "EventsPublishingStage":{
         "class":EventsPublishingStage,
         "dependencies":[]
+    },
+    "PolicyFilteringStage": {
+        "class": PolicyFilteringStage,
+        "dependencies": ["EnvConfig"]  
     }
 }

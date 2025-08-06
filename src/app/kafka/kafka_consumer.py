@@ -12,7 +12,7 @@ class KafkaConsumer:
             group_id="default-group",
             enable_auto_commit=True,
             max_poll_records=10,
-            max_poll_interval_ms=300000
+            max_poll_interval_ms=3600000
             ):
         self.consumer = AIOKafkaConsumer(
             topic,
@@ -23,7 +23,8 @@ class KafkaConsumer:
             session_timeout_ms=30000,        # Default is 10000 (10s) — extend to 30s
             heartbeat_interval_ms=10000,
             max_poll_records=max_poll_records, 
-            max_poll_interval_ms=max_poll_interval_ms  
+            max_poll_interval_ms=3600000,
+	    auto_offset_reset='latest',  
         )
 
     async def start(self):

@@ -19,6 +19,8 @@ class Event:
     messages: List[Message]=field(default_factory=list)
     location_name:str=""
     mentioned_location:str="" 
+    city:str =""
+    country:str=""
     time: datetime =  field(default_factory=datetime.utcnow)
     
     
