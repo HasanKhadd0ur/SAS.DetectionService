@@ -46,8 +46,8 @@ class DetectionAgent:
                 self.context = await self.strategy.detect(self.context)
 
                 # Run post-detection pipeline
-                self.context = self.postprocessing_pipeline.process(self.context)
-                self.context = self.publishing_pipeline.process(self.context)
+                self.context =await  self.postprocessing_pipeline.process(self.context)
+                self.context = await self.publishing_pipeline.process(self.context)
                 logger.info(f"Detected {len(self.context.detected_events)} new events.")
                 logger.info(f"Updated {len(self.context.updated_events)} events.")
 

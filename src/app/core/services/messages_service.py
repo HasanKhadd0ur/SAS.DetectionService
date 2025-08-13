@@ -18,6 +18,7 @@ class MessageService:
                 Message(
                     id=str(uuid.uuid4()),  # Generate a unique ID
                     platform=raw_message.get('platform', 'dummy'), 
+                    domainId='6380F497-D3FD-432E-A57A-78D1BF7B6009',#raw_message.get("domainId","6380F497-D3FD-432E-A57A-78D1BF7B6009"),
                     platform_id=raw_message.get('platform__id', "1e9cfd36-e1e8-49dc-abe7-d8e983ec2dd3"),   # Kafka as the source
                     domain=raw_message.get('domain', 'default'),  # Default to 'default' if not found
                     source=raw_message.get('source', 'unknown'),  # Default to 'unknown' if not found

@@ -10,6 +10,7 @@ class Message:
     source: str=""
     domain: str=""
     platform: str=""
+    domainId: str=""
     raw_content: str=""
     content: str=""
     sentiment_label: str=""
@@ -19,6 +20,13 @@ class Message:
     embedding: Optional[List[float]] = None
     
     metadata: dict = None
+    def __eq__(self, other):
+        if not isinstance(other, Message):
+            return False
+        return self.id == other.id
+
+    def __hash__(self):
+        return hash(self.id)
 
     def __post_init__(self):
         if self.metadata is None:

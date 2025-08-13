@@ -20,7 +20,7 @@ class KafkaConsumer:
             group_id=group_id,
             value_deserializer=lambda x: json.loads(x.decode("utf-8")),
             enable_auto_commit=enable_auto_commit,  # disable auto commit to control manually
-            session_timeout_ms=30000,        # Default is 10000 (10s) — extend to 30s
+            session_timeout_ms=300000,        # Default is 10000 (10s) — extend to 30s
             heartbeat_interval_ms=10000,
             max_poll_records=max_poll_records, 
             max_poll_interval_ms=3600000,

@@ -16,4 +16,8 @@ def register_strategies():
     ))
 
     # Register simple rule-based strategy (no config needed)
-    StrategyRegistry.register("rulebased", lambda: SimpleRuleBased())
+    StrategyRegistry.register("Our Detection Model", lambda: SimpleRuleBased())
+    # Register simple rule-based strategy (no config needed)
+    StrategyRegistry.register("Rule Based", lambda: SimpleRuleBased())
+    # Register simple rule-based strategy (no config needed)
+    StrategyRegistry.register("HCRC Model", lambda: SimpleRuleBased())

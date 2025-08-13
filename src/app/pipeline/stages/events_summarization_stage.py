@@ -23,7 +23,7 @@ class EventsSummerizationStage(ProcessingStage):
         # Initialize the Gemini generative model
         self.model = genai.GenerativeModel("gemini-1.5-flash")
 
-    def process(self, detection_context: DetectionContext, nextStep: Optional[ProcessingStage] = None) -> DetectionContext:
+    async def process(self, detection_context: DetectionContext, nextStep: Optional[ProcessingStage] = None) -> DetectionContext:
         for event in detection_context.detected_events:
             try:
                 # Combine all event messages into a single string

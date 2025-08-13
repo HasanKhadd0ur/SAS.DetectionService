@@ -19,7 +19,7 @@ def start_flask():
 async def run_detection_loop():
     print("[INFO] Detection Service Started")
     consumer = KafkaConsumer("Telegram.Politics",
-                             group_id='scraper-260e8ee0-14db-448b-a466-250ad6667be3',
+                             group_id='scraper-260e8ee0-24db-548b-a466-250ad6677be3',
                              enable_auto_commit=True,
                              max_poll_records=5,
                              max_poll_interval_ms=6000_000)

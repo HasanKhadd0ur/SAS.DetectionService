@@ -14,10 +14,10 @@ logger = LoggingService("SlidingHDBSCANDetectionStrategy").get_logger()
 class HDBSCANDetectionStrategy(DetectionStrategy):
     
     def __init__(self,
-                 window_size: int = 1000,
+                 window_size: int = 80,
                  time_window_days: int = 3,
-                 min_cluster_size: int = 15,
-                 min_batch_size: int = 100,
+                 min_cluster_size: int = 5,
+                 min_batch_size: int = 50,
                  min_samples: int = 5):
         self.window_size = window_size
         self.time_window_days = time_window_days

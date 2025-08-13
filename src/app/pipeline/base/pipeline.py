@@ -12,8 +12,8 @@ class Pipeline:
         return self  # Allow method chaining
 
 
-    def process(self, detection_context : DetectionContext) -> DetectionContext:
+    async def process(self, detection_context : DetectionContext) -> DetectionContext:
         """Process the events through all the filters in the pipeline."""
         for stage in self.filters:
-            context = stage.process(detection_context)
+            context = await stage.process(detection_context)
         return context

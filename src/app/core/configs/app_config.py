@@ -4,11 +4,12 @@ from app.pipeline.criteria.min_messages_criterion import MinMessagesCriterion
 
 
 class HDBSCANConfig:
-    WINDOW_SIZE = 1000
+    WINDOW_SIZE = 70
     TIME_WINDOW_DAYS = 3
-    MIN_CLUSTER_SIZE = 6
-    MIN_BATCH_SIZE =100
+    MIN_CLUSTER_SIZE = 5
+    MIN_BATCH_SIZE = 50
     MIN_SAMPLES = 5
+
 
 class StrategyParamsConfig:
     strategies = {
@@ -22,33 +23,34 @@ class StrategyParamsConfig:
         "rulebased": {}  # No params needed for now
     }
 
+
 ALLOWED_RULES = {
-    "Min Cluster Size": {
+    "min_cluster_size": {
         "type": int,
         "default": 5,
-        "enabld":True,
+        "enabled": True,
         "description": "Minimum number of samples in a cluster"
     },
-    "Min Distinct Words": {
-        "type": int,
-        "default": 10,
+    "min_distinct_words": {
+        "type": float,
+        "default": 0.3,
         "enabled": True,
-        "description": "Minimum number of distinct words across all event messages"
-    },
-    "Min Engagement": {
+        "description": "Minimum ratio of distinct words to total words in event messages"
+},
+    "min_engagement": {
         "type": int,
         "default": 2000,
         "enabled": True,
         "description": "Minimum total engagement score for event messages"
-    }    
-    # You can add more later: "min_samples", "topic_threshold", etc.
+    }
+    # Add more rules here if needed
 }
 
 
-# New: Criteria registry mapping rule names to criterion classes or factory functions
+# Criteria registry mapping rule names to corresponding criterion classes
 CRITERIA_MAP = {
     "min_cluster_size": MinMessagesCriterion,
     "min_distinct_words": MessageDiversityCriterion,
-     "min_engagement": MinEngagementCriterion,
+    "min_engagement": MinEngagementCriterion,
     # Add more criteria mappings here
 }

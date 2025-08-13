@@ -20,7 +20,7 @@ class PolicyFilteringStage(ProcessingStage):
             else:
                 print(f"[WARN] No criterion mapped for rule '{rule.name}'")
 
-    def process(self, detection_context: DetectionContext, nextStep=None) -> DetectionContext:
+    async def process(self, detection_context: DetectionContext, nextStep=None) -> DetectionContext:
         self.load_criteria()
 
         filtered_events = [

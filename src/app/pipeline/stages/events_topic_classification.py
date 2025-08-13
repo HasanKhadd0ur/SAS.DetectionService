@@ -22,7 +22,7 @@ class EventsTopicClassificationStage(ProcessingStage):
         # Initialize logging
         self.logger = LoggingService(name="EventsTopicClassificationStage").get_logger()
 
-    def process(self, detection_context: DetectionContext, nextStep: Optional[ProcessingStage] = None) -> DetectionContext:
+    async def process(self, detection_context: DetectionContext, nextStep: Optional[ProcessingStage] = None) -> DetectionContext:
         """
         Process the detection context by classifying the topic of each detected event.
 
@@ -42,7 +42,7 @@ class EventsTopicClassificationStage(ProcessingStage):
                 event.topic = topic
                 self.logger.debug(f"[Event {idx}] Classified topic: {topic}")
             else:
-                event.topic = "أخبار سياسية عامة"
+                event.topic = "أخبار المحافظات"
                 self.logger.warning(f"[Event {idx}] Missing content. Assigned default topic: غير معروف")
 
         self.logger.info("Completed topic classification.")

@@ -46,7 +46,7 @@ class EventsLocatingStage(ProcessingStage):
             "country": country
         }
 
-    def process(self, detection_context: DetectionContext, nextStep: Optional[ProcessingStage] = None) -> DetectionContext:
+    async def process(self, detection_context: DetectionContext, nextStep: Optional[ProcessingStage] = None) -> DetectionContext:
         for event in detection_context.detected_events:
             try:
                 location_name='سوريا دمشق'

@@ -6,7 +6,7 @@ from app.core.configs.base_config import BaseConfig
 
 
 class TopicClassificationService:
-    DEFAULT_TOPIC = "أخبار سياسية عامة"
+    DEFAULT_TOPIC = "أخبار سياسية سورية"
     TOPICS_API_URL =''
     
     def __init__(self, config: BaseConfig,api_url="http://localhost:5200"):
