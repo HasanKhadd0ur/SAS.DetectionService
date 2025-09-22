@@ -10,14 +10,19 @@ from app.detection.factory.detection_config import DetectionConfigManager
 from app.kafka.kafka_consumer import KafkaConsumer
 from app.pipeline.factory.default_pipelines import postprocessing_pipeline, publishing_pipeline
 from app.routes import create_flask_app 
+from app.core.services.logging_service import LoggingService  # Import LoggingService
 import uuid
+
+# Initialize the logger using LoggingService
+logger = LoggingService(name="Main").get_logger()
 
 def start_flask():
     app = create_flask_app()
+    logger.info("Starting Flask app on 0.0.0.0:5300")
     app.run(host="0.0.0.0", port=5300)
 
 async def run_detection_loop():
-    print("[INFO] Detection Service Started")
+    logger.info("Detection Service Started")
     consumer = KafkaConsumer("Telegram.Politics",
                              group_id='scraper-260e8ee0-24db-548b-a466-250ad6677be3',
                              enable_auto_commit=True,
@@ -34,7 +39,7 @@ async def run_detection_loop():
         postprocessing_pipeline=postprocessing_pipeline,
         publishing_pipeline=publishing_pipeline)
 
-    print("[INFO] Start Consuming Messages")
+    logger.info("Start Consuming Messages")
     msg_service = MessageService(consumer)
 
     try:
